@@ -1,6 +1,7 @@
 package com.repository.My_System.aplication;
 
 import com.repository.My_System.domain.enums.EnumStatus;
+import com.repository.My_System.domain.exceptions.OrderNotFoudExceptions;
 import com.repository.My_System.domain.model.Order;
 import com.repository.My_System.domain.ports.in.TakeOrderInPort;
 import com.repository.My_System.domain.ports.out.RepisitoryOrders;
@@ -18,7 +19,7 @@ public class TakeOrderUseCase implements TakeOrderInPort {
     @Override
     public Order takeOrder(UUID orderId) {
 
-        var order = repisitoryOrders.findOrderById(orderId);
+        var order = repisitoryOrders.findOrderById(orderId).orElseThrow(() -> new OrderNotFoudExceptions("Id not found"));
 
         if (order.getStatus() != EnumStatus.PAID) {
             throw new IllegalStateException("Order is not Paid");

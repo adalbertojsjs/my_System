@@ -19,7 +19,7 @@ public class CancelOrderUseCase implements CancelOrderInPort {
     public void cancelOrder(UUID orderId) {
         validateId(orderId);
 
-        var order = repisitoryOrders.findOrderById(orderId);
+        var order = repisitoryOrders.findOrderById(orderId).orElseThrow(() -> new OrderNotFoudExceptions("Id not found"));
 
         if (order.getStatus() == EnumStatus.PAID || order.getStatus() == EnumStatus.PREPARING){
             throw new RuntimeException("order is paid ");

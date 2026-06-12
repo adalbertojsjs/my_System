@@ -5,10 +5,7 @@ import com.repository.My_System.aplication.TakeOrderUseCase;
 import com.repository.My_System.domain.model.Order;
 import com.repository.My_System.domain.model.Payment;
 import com.repository.My_System.domain.model.Receipt;
-import com.repository.My_System.domain.ports.in.CancelOrderInPort;
-import com.repository.My_System.domain.ports.in.PayOrderInPort;
-import com.repository.My_System.domain.ports.in.ReadReceiptInPort;
-import com.repository.My_System.domain.ports.in.Update0rderInPort;
+import com.repository.My_System.domain.ports.in.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -23,13 +20,13 @@ import java.util.UUID;
 @RequestMapping("/v1/coffee")
 public class OrderController {
 
-//    private final OrderMapper mapper;
     private final CancelOrderInPort cancelOrderInPort;
     private final CreatedOderUseCase orderUseCase;
     private final ReadReceiptInPort readReceiptInPort;
     private final TakeOrderUseCase takeOrderUseCase;
     private final Update0rderInPort update0rderInPort;
     private final PayOrderInPort payOrderInPort;
+    private final SearchOrderByIdInPort searchOrderByIdInPort;
 
 
     @GetMapping("/{id}")
@@ -73,5 +70,13 @@ public class OrderController {
         cancelOrderInPort.cancelOrder(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+
+    @GetMapping("/{id}/Order")
+    public ResponseEntity<Order> findById(@PathVariable UUID id){
+
+        return ResponseEntity.status(HttpStatus.OK).body(searchOrderByIdInPort.findById(id));
+
     }
 }

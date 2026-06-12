@@ -8,5 +8,4 @@ public enum EnumStatus {
     READY,
     TAKEN,
     CANCELLED
-
 }

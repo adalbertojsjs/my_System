@@ -33,8 +33,8 @@ public class ReadReceiptUseCase implements ReadReceiptInPort {
                 paymentmethod(payment.getPaymentmethod()).
                 build();
 
-        repositoryReceip.save(receipt);
-       return receipt;
+       return repositoryReceip.save(receipt);
+
     }
 
     private void validateId(UUID id) {

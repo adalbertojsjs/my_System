@@ -8,6 +8,8 @@ import com.repository.My_System.domain.ports.out.RepisitoryOrders;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import static java.util.Objects.isNull;
+
 @Component
 @AllArgsConstructor
 public class CreatedOderUseCase implements CreatedOrderInPort {
@@ -17,13 +19,12 @@ public class CreatedOderUseCase implements CreatedOrderInPort {
     @Override
     public Order createdOrder(Order orderR){
 
-        if (orderR == null){
+        if (isNull(orderR)){
             throw new OrderNotFoudExceptions("order cannot be null");
         }
 
         var order = Order.builder()
                 .enumLocation(orderR.getEnumLocation())
-//                .quantity(orderR.getQuantity())
                 .status(EnumStatus.READY)
                 .items(orderR.getItems())
                 .build();

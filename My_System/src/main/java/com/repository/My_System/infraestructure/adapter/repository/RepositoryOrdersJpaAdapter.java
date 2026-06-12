@@ -7,6 +7,7 @@ import com.repository.My_System.infraestructure.repository.OrderRepositoryJpa;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -17,10 +18,8 @@ public class RepositoryOrdersJpaAdapter implements RepisitoryOrders {
         private final OrderMapper mapper;
 
     @Override
-    public Order findOrderById(UUID orderId) {
-       var order = repositoryJpa.findById(orderId).orElseThrow(() -> new RuntimeException("Order no found"));
-
-        return mapper.toDomain(order);
+    public Optional<Order> findOrderById(UUID orderId) {
+        return repositoryJpa.findById(orderId).map(mapper::toDomain);
     }
 
     @Override

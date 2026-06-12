@@ -17,22 +17,22 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import static java.util.Objects.isNull;
+
 @Component
 @AllArgsConstructor
 public class PayOrderUseCase implements PayOrderInPort {
 
     private final RepisitoryOrders repisitoryOrders;
     private final RepositoryPayment repositoryPayment;
-//    private final Validate validate;
 
     @Override
     public Payment payOrder(UUID orderId, Payment payment) {
 
-//        validate.validateId(orderId);
-        if (orderId == null){
+        if (isNull(orderId)){
             throw  new OrderNotFoudExceptions("Order invalid");
         }
-        var order = repisitoryOrders.findOrderById(orderId);
+        var order = repisitoryOrders.findOrderById(orderId).orElseThrow(() -> new OrderNotFoudExceptions("Id not found"));
 
         if (order.getStatus() == EnumStatus.PAID) {
             throw new InvalidPaymentExceptions("the order has already been paid for");
@@ -54,12 +54,12 @@ public class PayOrderUseCase implements PayOrderInPort {
             throw  new InvalidPaymentExceptions("Invalid methodoPayment");
         }
 
-        var costoFinal = getCost(order.getItems());
+        var costoFinal = geCost(order.getItems());
 
         var maskedCard = numCard(payment);
         var paymentR = Payment.builder().
                 costoFinal(costoFinal).
-                orderId(orderId).
+                orderId(order.getId()).
                 cardHoldernName(payment.getCardHoldernName()).
                 numCard(maskedCard).
                 paymentmethod(payment.getPaymentmethod()).
@@ -73,21 +73,39 @@ public class PayOrderUseCase implements PayOrderInPort {
         return paymentSved;
     }
 
-    private BigDecimal getCost(List<CoffeeItem> items) {
-        BigDecimal total = BigDecimal.ZERO;
+    //Código reutilizado del proyecto original
+//    private BigDecimal getCost(List<CoffeeItem> items) {
+//        BigDecimal total = BigDecimal.ZERO;
+//
+//        for (CoffeeItem item : items) {
+//            BigDecimal price = BigDecimal.ZERO;
+//
+//            if (item.getSize() == EnumSize.SMALL){
+//                price = BigDecimal.valueOf(4.0);
+//            }
+//            if (item.getSize() == EnumSize.LARGE) {
+//                price = BigDecimal.valueOf(5.0);
+//            }
+//
+//            total = total.add(price.multiply(BigDecimal.valueOf(item.getQuantity())));
+//        }
+//        return total;
+//
+//    }
 
-        for (CoffeeItem item : items) {
-            BigDecimal price = BigDecimal.valueOf(4.0);
-
-            if (item.getSize() == EnumSize.LARGE) {
-                price = BigDecimal.valueOf(5.0);
-            }
-
-            total = total.add(price.multiply(BigDecimal.valueOf(item.getQuantity())));
-        }
-        return total;
+    //Este remplazo al metodo getCost de arriba
+    private  BigDecimal geCost(List<CoffeeItem> items){
+        return items.stream().       //Reemplazó al metodo getPriceBySize
+                map(item -> item.getSize().getPrice().
+                         multiply(BigDecimal.valueOf(item.getQuantity()))).
+                         reduce(BigDecimal.ZERO , BigDecimal::add);
     }
 
+//
+//    private BigDecimal getPriceBySize(EnumSize size){
+//        return (size == EnumSize.LARGE) ? BigDecimal.valueOf(5.0) : BigDecimal.valueOf(4.0);
+//
+//    }
     private String numCard(Payment payment ){
         var numCard = payment.getNumCard();
 
