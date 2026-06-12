@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,7 +37,7 @@ public class TestTakeOrderUseCase {
                 build();
 
 
-        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(order);
+        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(Optional.of(order));
 
         var reslt = useCase.takeOrder(order.getId());
 
@@ -58,7 +59,7 @@ public class TestTakeOrderUseCase {
                 status(EnumStatus.READY).
                 build();
 
-        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(order);
+        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(Optional.of(order));
 
         assertThrows(IllegalStateException.class, ()-> useCase.takeOrder(order.getId()));
 

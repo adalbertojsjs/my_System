@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,7 +72,7 @@ public class TestPayOrderUseCase {
                 build();
 
 
-        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(order);
+        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(Optional.of(order));
         when(repisitoryOrders.save(any())).thenReturn(order);
         when(repositoryPayment.save(any())).thenReturn(payment);
 
@@ -132,7 +133,7 @@ public class TestPayOrderUseCase {
                 orderId(order.getId()).
                 build();
 
-        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(order);
+        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(Optional.of(order));
 
         assertThrows(InvalidPaymentExceptions.class,()-> useCase.payOrder(order.getId(),payment));
 
@@ -159,7 +160,7 @@ public class TestPayOrderUseCase {
                 orderId(order.getId()).
                 build();
 
-        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(order);
+        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(Optional.of(order));
 
         assertThrows(InvalidPaymentExceptions.class, ()-> useCase.payOrder(order.getId(),payment));
 
@@ -186,7 +187,7 @@ public class TestPayOrderUseCase {
                 orderId(order.getId()).
                 build();
 
-        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(order);
+        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(Optional.of(order));
 
         assertThrows(InvalidPaymentExceptions.class,()-> useCase.payOrder(order.getId(),payment));
 
@@ -213,7 +214,7 @@ public class TestPayOrderUseCase {
                 orderId(order.getId()).
                 build();
 
-        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(order);
+        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(Optional.of(order));
 
         assertThrows(InvalidPaymentExceptions.class, () -> useCase.payOrder(order.getId(), payment));
 
@@ -239,7 +240,7 @@ public class TestPayOrderUseCase {
                 orderId(order.getId()).
                 build();
 
-        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(order);
+        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(Optional.of(order));
 
         assertThrows(InvalidPaymentExceptions.class, () -> useCase.payOrder(order.getId(), payment));
 
@@ -265,7 +266,7 @@ public class TestPayOrderUseCase {
                 orderId(order.getId()).
                 build();
 
-        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(order);
+        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(Optional.of(order));
 
         assertThrows(InvalidPaymentExceptions.class, () -> useCase.payOrder(order.getId(), payment));
 

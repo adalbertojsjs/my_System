@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -60,7 +61,7 @@ public class TestUpdateOrderUseCase {
 
 
         when(repisitoryOrders.save(order)).thenReturn(order);
-        when(repisitoryOrders.findOrderById(orderId)).thenReturn(order);
+        when(repisitoryOrders.findOrderById(orderId)).thenReturn(Optional.of(order));
 
         var result = useCase.updateOrder(orderId,EnumLocation.TAKE_AWAY,items);
 
@@ -129,7 +130,7 @@ public class TestUpdateOrderUseCase {
                         .build()
         );
 
-        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(order);
+        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(Optional.of(order));
 
         assertThrows(InvalidPaymentExceptions.class,
                 ()-> useCase.updateOrder(order.getId(),EnumLocation.TAKE_AWAY,items));
@@ -161,7 +162,7 @@ public class TestUpdateOrderUseCase {
                         .build()
         );
 
-        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(order);
+        when(repisitoryOrders.findOrderById(order.getId())).thenReturn(Optional.of(order));
 
         assertThrows(InvalidPaymentExceptions.class,
                 ()-> useCase.updateOrder(order.getId(),EnumLocation.TAKE_AWAY,items));
