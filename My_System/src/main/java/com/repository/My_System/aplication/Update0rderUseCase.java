@@ -25,7 +25,9 @@ public class Update0rderUseCase implements Update0rderInPort {
     public Order updateOrder(UUID orderId, EnumLocation location, List<CoffeeItem> items) {
 
         validateId(orderId);
-        var order = repisitoryOrders.findOrderById(orderId).orElseThrow(() -> new OrderNotFoudExceptions("Id not found"));
+
+        var order = repisitoryOrders.findOrderById(orderId)
+                .orElseThrow(() -> new OrderNotFoudExceptions("Id not found"));
 
         if (order.getStatus() == EnumStatus.CANCELLED || order.getStatus() == EnumStatus.PAID){
             throw  new InvalidPaymentExceptions("Order invalid for update");

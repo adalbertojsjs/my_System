@@ -1,6 +1,5 @@
 package com.repository.My_System.aplication;
 
-import com.repository.My_System.domain.enums.EnumSize;
 import com.repository.My_System.domain.enums.EnumStatus;
 import com.repository.My_System.domain.exceptions.InvalidPaymentExceptions;
 import com.repository.My_System.domain.exceptions.OrderNotFoudExceptions;
